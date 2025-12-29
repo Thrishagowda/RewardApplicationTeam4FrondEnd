@@ -1,0 +1,61 @@
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Redemption History</h2>
+      <button class="btn btn-outline-secondary" routerLink="/dashboard/1">
+        ⬅ Back to Dashboard
+      </button>
+    </div>
+  
+    <div *ngIf="isLoading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Loading your past orders...</p>
+    </div>
+  
+    <div *ngIf="errorMsg" class="alert alert-danger shadow-sm">
+      {{ errorMsg }}
+    </div>
+  
+    <div class="table-responsive" *ngIf="!isLoading">
+      <table class="table table-hover table-bordered align-middle shadow-sm bg-white">
+        <thead class="table-dark">
+          <tr>
+            <th>Order ID</th>
+            <th>Items Redeemed</th>
+            <th class="text-end">Points Spent</th>
+            <th>Date</th>
+            <th class="text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of history">
+            <td class="fw-bold text-primary">{{ record.orderId }}</td>
+            
+            <td>
+              <ul class="mb-0 ps-3">
+                <li *ngFor="let item of record.itemsRedeemed">{{ item }}</li>
+              </ul>
+            </td>
+            
+            <td class="text-end fw-bold text-danger">
+              - {{ record.pointsRedeemed }}
+            </td>
+            
+            <td>{{ record.redemptionDate | date:'medium' }}</td>
+            
+            <td class="text-center">
+              <span class="badge bg-success">SUCCESS</span>
+            </td>
+          </tr>
+  
+          <tr *ngIf="history.length === 0">
+            <td colspan="5" class="text-center py-5 text-muted">
+              <div class="fs-1 mb-2">📜</div>
+              <h5>No History Found</h5>
+              <p>You haven't redeemed any rewards yet.</p>
+              <button class="btn btn-primary mt-2" routerLink="/redeem">Go to Catalog</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

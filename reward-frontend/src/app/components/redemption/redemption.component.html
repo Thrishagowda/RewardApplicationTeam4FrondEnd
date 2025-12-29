@@ -1,0 +1,64 @@
+<div class="container mt-4 mb-5">
+  
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Rewards Catalog</h2>
+      <div class="text-end">
+        <h5 class="m-0 text-muted">Your Balance: {{ currentBalance }} Pts</h5>
+        <h4 class="m-0 text-primary">Cart: {{ totalPointsRequired }} Pts</h4>
+      </div>
+    </div>
+  
+    <div *ngIf="successMsg" class="alert alert-success shadow-sm">
+      <h4>🎉 {{ successMsg }}</h4>
+    </div>
+  
+    <div *ngIf="errorMsg" class="alert alert-danger shadow-sm">
+      <strong>Error:</strong> {{ errorMsg }}
+    </div>
+  
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let item of catalog">
+        <div class="card h-100 shadow-sm" [class.border-success]="selectedItems.has(item.name)">
+          
+          <div class="card-header bg-white text-center py-4">
+            <img *ngIf="item.imageUrl" 
+                 [src]="item.imageUrl" 
+                 (error)="item.imageUrl = ''" 
+                 alt="{{ item.name }}" 
+                 style="height: 100px; object-fit: contain;">
+            
+            <div *ngIf="!item.imageUrl" class="display-4 text-secondary">
+               🎁
+            </div>
+          </div>
+  
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <span class="badge bg-secondary mb-2">{{ item.category }}</span>
+            <h3 class="text-primary mt-2">{{ item.pointsRequired }} Pts</h3>
+          </div>
+  
+          <div class="card-footer bg-light border-0">
+            <div class="form-check form-switch d-flex align-items-center gap-2">
+              <input class="form-check-input fs-4" type="checkbox" 
+                     [id]="'item-' + item.id"
+                     [disabled]="(currentBalance - totalPointsRequired + (selectedItems.has(item.name) ? item.pointsRequired : 0)) < item.pointsRequired && !selectedItems.has(item.name)"
+                     (change)="toggleItem(item, $event)">
+              <label class="form-check-label fw-bold cursor-pointer" [for]="'item-' + item.id">
+                {{ selectedItems.has(item.name) ? 'Selected' : 'Add to Cart' }}
+              </label>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="fixed-bottom bg-white border-top shadow p-3 text-center" *ngIf="totalPointsRequired > 0 && !successMsg">
+      <button class="btn btn-success btn-lg px-5 shadow" (click)="redeemPoints()" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        Confirm Redemption ({{ totalPointsRequired }} Pts)
+      </button>
+    </div>
+  
+  </div>

@@ -1,0 +1,79 @@
+<div class="container mt-5" *ngIf="customer; else loadingTpl">
+  
+    <div class="card mb-4 shadow-sm border-primary">
+      <div class="card-header bg-primary text-white">
+        <h4 class="m-0">Customer Profile</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="card-title">{{ customer.firstName }} {{ customer.lastName }}</h2> 
+            <p class="text-muted">Email: {{ customer.email || 'N/A' }} | Phone: {{ customer.phoneNum }}</p>
+            
+            <span class="badge" [ngClass]="customer.isActive ? 'bg-success' : 'bg-danger'">
+              {{ customer.isActive ? 'Active Member' : 'Inactive' }}
+            </span>
+            <span class="badge bg-info text-dark ms-2">{{ customer.customerType }}</span>
+          </div>
+          
+          <div class="col-md-6 text-end">
+            <h5>Card Balance</h5>
+            <h1 class="text-primary display-4">
+              {{ (customer.creditCard && customer.creditCard.length > 0) ? customer.creditCard[0].rewardPoints : 0 }} Pts
+            </h1>
+            <p class="text-muted small">
+              Card: {{ (customer.creditCard && customer.creditCard.length > 0) ? customer.creditCard[0].cardNumber : 'No Card Linked' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <h4 class="mb-3 text-muted">Available Actions</h4>
+    
+    <div class="row g-4">
+      
+      <div class="col-md-4">
+        <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/transactions" style="cursor: pointer;">
+          <div class="display-4 text-primary mb-3">📄</div>
+          <h5>View Transactions</h5>
+          <p class="text-muted small">Check history & process pending items.</p>
+          <button class="btn btn-outline-primary mt-2">Open Transactions</button>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/redeem" style="cursor: pointer;">
+          <div class="display-4 text-warning mb-3">🎁</div>
+          <h5>Redeem Points</h5>
+          <p class="text-muted small">Browse catalog & claim rewards.</p>
+          <button class="btn btn-outline-warning mt-2">Open Catalog</button>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/history" style="cursor: pointer;">
+          <div class="display-4 text-success mb-3">📜</div>
+          <h5>History</h5>
+          <p class="text-muted small">View past redemptions.</p>
+          <button class="btn btn-outline-success mt-2">View History</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <ng-template #loadingTpl>
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary"></div>
+      <p>Loading Customer Profile...</p>
+    </div>
+  </ng-template>
+  
+  <style>
+    .action-card:hover {
+      transform: translateY(-5px);
+      transition: transform 0.2s;
+      border-color: #0d6efd;
+    }
+  </style>

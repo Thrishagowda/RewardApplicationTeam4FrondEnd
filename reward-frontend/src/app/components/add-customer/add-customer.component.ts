@@ -9,14 +9,16 @@ import { RewardApiService } from '../../services/reward-api.service';
 })
 export class AddCustomerComponent {
 
+  // Get Today's Date in YYYY-MM-DD format
+  maxDate: string = new Date().toISOString().split('T')[0];
+
   // Form Model
   customer = {
     firstName: '',
     lastName: '',
     email: '',
     phoneNum: '',
-    // Initialize with today's date, but user can now edit it in the HTML
-    doj: new Date().toISOString().split('T')[0], 
+    doj: this.maxDate, // Default to today
     isActive: true,
     customerType: 'REGULAR' 
   };

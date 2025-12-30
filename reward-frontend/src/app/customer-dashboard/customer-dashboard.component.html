@@ -1,0 +1,112 @@
+<div class="container mt-5" *ngIf="customer; else loadingTpl">
+  
+  <div class="card mb-4 shadow-sm border-primary">
+    
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="m-0">Customer Profile</h4>
+      <button class="btn btn-danger btn-sm border-white" (click)="deleteCustomer()">
+        ⚠ Deactivate User
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 border-end">
+          <h2 class="card-title">{{ customer.firstName }} {{ customer.lastName }}</h2> 
+          <p class="text-muted">Email: {{ customer.email || 'N/A' }} <br> Phone: {{ customer.phoneNum }}</p>
+          
+          <div class="mt-2">
+            <span class="badge" [ngClass]="customer.isActive ? 'bg-success' : 'bg-danger'">
+              {{ customer.isActive ? 'Active Member' : 'Inactive' }}
+            </span>
+            <span class="badge bg-info text-dark ms-2">{{ customer.customerType }}</span>
+          </div>
+        </div>
+        
+        <div class="col-md-6 ps-4">
+          <h5 class="text-muted mb-3">Active Card Wallet</h5>
+
+          <div *ngIf="!customer.creditCard || customer.creditCard.length === 0" class="alert alert-warning">
+            No credit cards linked to this account.
+          </div>
+
+          <div *ngIf="customer.creditCard && customer.creditCard.length > 0">
+            
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Select Card to Manage:</label>
+              <select class="form-select" [ngModel]="selectedCard" (ngModelChange)="onCardSelect($event)">
+                <option *ngFor="let card of customer.creditCard" [ngValue]="card">
+                  {{ card.cardNumber }}
+                </option>
+              </select>
+            </div>
+
+            <div class="text-end mt-4 p-3 bg-light rounded border">
+              <small class="text-muted">Available Balance</small>
+              <h1 class="text-primary display-4 fw-bold mb-0">
+                {{ selectedCard?.rewardPoints || 0 | number:'1.0-0' }} <span class="fs-4">Pts</span>
+              </h1>
+              <small class="text-success">
+                Card ending in {{ selectedCard?.cardNumber | slice:-4 }}
+              </small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-3 text-muted">Available Actions</h4>
+  
+  <div class="row g-4">
+    
+    <div class="col-md-3">
+      <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/transactions" style="cursor: pointer;">
+        <div class="display-4 text-primary mb-3">📄</div>
+        <h5>Transactions</h5>
+        <button class="btn btn-outline-primary mt-2">View</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/redeem" style="cursor: pointer;">
+        <div class="display-4 text-warning mb-3">🎁</div>
+        <h5>Redeem Points</h5>
+        <button class="btn btn-outline-warning mt-2">Catalog</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-center p-4 shadow-sm action-card" routerLink="/history" style="cursor: pointer;">
+        <div class="display-4 text-secondary mb-3">📜</div>
+        <h5>History</h5>
+        <button class="btn btn-outline-secondary mt-2">Log</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-center p-4 shadow-sm action-card" 
+           [routerLink]="['/add-card', customer.customerId]" style="cursor: pointer;">
+        <div class="display-4 text-success mb-3">💳</div>
+        <h5>Link Card</h5>
+        <button class="btn btn-outline-success mt-2">Add New</button>
+      </div>
+    </div>
+
+  </div>
+</div> 
+<ng-template #loadingTpl>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-primary"></div>
+    <p>Loading Customer Profile...</p>
+  </div>
+</ng-template>
+
+<style>
+  .action-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s;
+    border-color: #0d6efd;
+  }
+</style>

@@ -1,0 +1,67 @@
+<div class="container mt-5">
+    <h2 class="mb-4">👑 Admin Management Panel</h2>
+  
+    <div class="row">
+      
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-success text-white">Add New CES User</div>
+          <div class="card-body">
+            <form (ngSubmit)="addUser()">
+              <div class="mb-3">
+                <label>Username</label>
+                <input type="text" class="form-control" [(ngModel)]="newUser.userName" name="uname" required>
+              </div>
+              <div class="mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control" [(ngModel)]="newUser.password" name="pass" required>
+              </div>
+              
+              <button class="btn btn-success w-100" [disabled]="isLoading">
+                {{ isLoading ? 'Creating...' : 'Create User' }}
+              </button>
+              
+              <div *ngIf="message" class="mt-2 text-success small">{{ message }}</div>
+              <div *ngIf="errorMsg" class="mt-2 text-danger small">{{ errorMsg }}</div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-dark text-white">System Users</div>
+          <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users">
+                  <td>{{ user.id }}</td>
+                  <td class="fw-bold">{{ user.userName }}</td>
+                  <td>
+                    <span [class]="user.role === 'ADMIN' ? 'badge bg-danger' : 'badge bg-info text-dark'">
+                      {{ user.role }}
+                    </span>
+                  </td>
+                  <td>
+                    <button *ngIf="user.role !== 'ADMIN'" class="btn btn-sm btn-outline-danger" 
+                            (click)="deleteUser(user.userName)">
+                      🗑 Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>

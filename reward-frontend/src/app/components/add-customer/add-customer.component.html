@@ -1,0 +1,56 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow">
+          <div class="card-header bg-success text-white">
+            <h4 class="m-0">Register New Customer</h4>
+          </div>
+          <div class="card-body p-4">
+  
+            <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+            <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  
+            <form (ngSubmit)="onSubmit()">
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="customer.firstName" name="firstName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="customer.lastName" name="lastName" required>
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" [(ngModel)]="customer.email" name="email" required>
+              </div>
+  
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Phone Number</label>
+                  <input type="number" class="form-control" [(ngModel)]="customer.phoneNum" name="phoneNum" required>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label">Date of Joining</label>
+                  <input type="date" class="form-control" [(ngModel)]="customer.doj" name="doj" required>
+                  <small class="text-muted">Used to calculate Customer Tier</small>
+                </div>
+              </div>
+  
+              <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-secondary" routerLink="/">Cancel</button>
+                <button type="submit" class="btn btn-success px-4" [disabled]="isLoading">
+                  {{ isLoading ? 'Saving...' : 'Create Customer' }}
+                </button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
